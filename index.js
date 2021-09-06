@@ -15,9 +15,12 @@ const donationRequestRoutes = require("./routes/donationRequest");
 
 const app = express();
 
+const DBURL =
+  "mongodb+srv://admin:admin0307@fda.ja2cz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
 //DB Connection
 mongoose
-  .connect(process.env.DBURL, {
+  .connect(process.env.DBURL || DBURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
