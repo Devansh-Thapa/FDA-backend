@@ -64,14 +64,18 @@ exports.getAvailableDonationBags = (req, res) => {
   DonationBag.find({
     status: "Available",
     user: { $ne: req.params.userId },
-  }).exec((err, donationBags) => {
-    if (err) {
-      return res.status(400).json({
-        error: "No donation bag found.",
-      });
-    }
-    res.json(donationBags);
-  });
+  })
+    .populate("user", "name")
+    .populate("acceptedBy", "name")
+    .exec((err, donationBags) => {
+      if (err) {
+        console.log(err, donationBags);
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      res.json(donationBags);
+    });
 };
 
 //Update donation bag

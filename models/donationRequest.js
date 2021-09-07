@@ -19,7 +19,7 @@ const donationRequestSchema = new Schema(
     },
     user: {
       type: ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
     contactNumber: {
@@ -44,7 +44,7 @@ const donationRequestSchema = new Schema(
     },
     acceptedBy: {
       type: ObjectId,
-      ref: "user",
+      ref: "User",
     },
     updated: {
       type: Date,
