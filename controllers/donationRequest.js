@@ -21,16 +21,21 @@ exports.getDonationRequest = (req, res) => {
 //Get donation requests by user ID
 exports.getDonationRequestByUserId = (req, res) => {
   //   console.log(req.params.userId);
-  DonationRequest.find({ user: req.params.userId }).exec(
-    (err, donationRequests) => {
+  DonationRequest.find({
+    $or: [{ user: req.params.userId }, { acceptedBy: req.params.userId }],
+    status: req.query.status,
+  })
+    .populate("user", "name")
+    .populate("acceptedBy", "name")
+    .exec((err, donationRequests) => {
       if (err) {
         return res.status(400).json({
           error: "No donation request found!!",
         });
       }
+      console.log(donationRequests);
       res.json(donationRequests);
-    }
-  );
+    });
 };
 
 //Create donation request
@@ -66,17 +71,37 @@ exports.getAllDonationRequests = (req, res) => {
 
 // Get availabe donation requests
 exports.getAvailableDonationRequests = (req, res) => {
-  DonationRequest.find({
+  var filter = {
     status: "Available",
     user: { $ne: req.params.userId },
-  }).exec((err, donationRequests) => {
-    if (err) {
-      return res.status(400).json({
-        error: "No donation bag found.",
-      });
-    }
-    res.json(donationRequests);
-  });
+  };
+
+  console.log("category:", req.query.category);
+  if (req.query.category != "undefined") {
+    filter["category"] = req.query.category;
+  }
+
+  console.log("state:", req.query.state);
+  if (req.query.state != "undefined") {
+    filter["state"] = req.query.state;
+  }
+
+  console.log("city:", req.query.city);
+  if (req.query.city != "undefined") {
+    filter["city"] = req.query.city;
+  }
+
+  console.log("filter", filter);
+  DonationRequest.find(filter)
+    .populate("user", "name")
+    .exec((err, donationRequests) => {
+      if (err) {
+        return res.status(400).json({
+          error: "No donation bag found.",
+        });
+      }
+      res.json(donationRequests);
+    });
 };
 
 //Update donation request
