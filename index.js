@@ -8,9 +8,7 @@ const cors = require("cors");
 //Routes
 const authRoutes = require("./routes/authentication");
 const userRoutes = require("./routes/user");
-const categoryRoutes = require("./routes/category");
 const donationBagRoutes = require("./routes/donationBag");
-const foodItemRoutes = require("./routes/foodItem");
 const donationRequestRoutes = require("./routes/donationRequest");
 
 const app = express();
@@ -38,9 +36,7 @@ app.use(cors());
 //api routes
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
-app.use("/api", categoryRoutes);
 app.use("/api", donationBagRoutes);
-app.use("/api", foodItemRoutes);
 app.use("/api", donationRequestRoutes);
 
 //PORT

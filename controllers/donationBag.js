@@ -20,7 +20,7 @@ exports.getDonationBag = (req, res) => {
 
 //Get donation bags by user ID
 exports.getDonationBagByUserId = (req, res) => {
-  console.log(req.params.userId);
+  // console.log(req.params.userId);
   DonationBag.find({
     $or: [{ user: req.params.userId }, { acceptedBy: req.params.userId }],
     status: req.query.status,
@@ -39,11 +39,11 @@ exports.getDonationBagByUserId = (req, res) => {
 
 //Create donation bag
 exports.createDonationBag = (req, res) => {
-  console.log("BODY:", req.body);
+  // console.log("BODY:", req.body);
   const donationBag = new DonationBag({ ...req.body, user: req.params.userId });
   donationBag.save((err, donationBag) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(400).json({
         error: "Unable to save donation bag!!",
         err: err,
@@ -72,28 +72,28 @@ exports.getAvailableDonationBags = (req, res) => {
     user: { $ne: req.params.userId },
   };
 
-  console.log("category:", req.query.category);
+  // console.log("category:", req.query.category);
   if (req.query.category != "undefined") {
     filter["category"] = req.query.category;
   }
 
-  console.log("state:", req.query.state);
+  // console.log("state:", req.query.state);
   if (req.query.state != "undefined") {
     filter["state"] = req.query.state;
   }
 
-  console.log("city:", req.query.city);
+  // console.log("city:", req.query.city);
   if (req.query.city != "undefined") {
     filter["city"] = req.query.city;
   }
 
-  console.log("filter", filter);
+  // console.log("filter", filter);
 
   DonationBag.find(filter)
     .populate("user", "name")
     .exec((err, donationBags) => {
       if (err) {
-        console.log(err, donationBags);
+        // console.log(err, donationBags);
         return res.status(400).json({
           error: err,
         });
@@ -139,9 +139,9 @@ exports.removeDonationBag = (req, res) => {
 
 // Accept donation bag
 exports.acceptDonationBag = (req, res) => {
-  console.log(req);
+  // console.log(req);
   const donationBag = req.donationBag;
-  console.log(donationBag);
+  // console.log(donationBag);
   donationBag.status = "Accepted";
   donationBag.acceptedBy = req.params.userId;
   donationBag.save((err, updatedDonationBag) => {

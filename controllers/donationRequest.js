@@ -33,7 +33,7 @@ exports.getDonationRequestByUserId = (req, res) => {
           error: "No donation request found!!",
         });
       }
-      console.log(donationRequests);
+      // console.log(donationRequests);
       res.json(donationRequests);
     });
 };
@@ -47,7 +47,7 @@ exports.createDonationRequest = (req, res) => {
   });
   donationrequest.save((err, donationRequest) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(400).json({
         error: "Unable to save donation request!!",
         err: err,
@@ -76,22 +76,22 @@ exports.getAvailableDonationRequests = (req, res) => {
     user: { $ne: req.params.userId },
   };
 
-  console.log("category:", req.query.category);
+  // console.log("category:", req.query.category);
   if (req.query.category != "undefined") {
     filter["category"] = req.query.category;
   }
 
-  console.log("state:", req.query.state);
+  // console.log("state:", req.query.state);
   if (req.query.state != "undefined") {
     filter["state"] = req.query.state;
   }
 
-  console.log("city:", req.query.city);
+  // console.log("city:", req.query.city);
   if (req.query.city != "undefined") {
     filter["city"] = req.query.city;
   }
 
-  console.log("filter", filter);
+  // console.log("filter", filter);
   DonationRequest.find(filter)
     .populate("user", "name")
     .exec((err, donationRequests) => {
@@ -135,9 +135,9 @@ exports.removeDonationRequest = (req, res) => {
 
 // Accept donation request
 exports.acceptDonationRequest = (req, res) => {
-  console.log(req);
+  // console.log(req);
   const donationRequest = req.donationRequest;
-  console.log(donationRequest);
+  // console.log(donationRequest);
   donationRequest.status = "Accepted";
   donationRequest.acceptedBy = req.params.userId;
   donationRequest.save((err, updatedDonationRequest) => {
